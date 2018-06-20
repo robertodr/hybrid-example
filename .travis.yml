@@ -1,0 +1,50 @@
+language: cpp
+sudo: false
+dist: trusty
+matrix:
+  include:
+    - os: linux
+      addons: &1
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+            - libopenmpi-dev
+            - openmpi-bin
+      env:
+        - CMAKE_VERSION="3.11.4"
+        - GENERATOR="Unix Makefiles"
+        - BUILDFLAGS="VERBOSE=1"
+    - os: osx
+      env:
+        - GENERATOR="Unix Makefiles"
+        - BUILDFLAGS="VERBOSE=1"
+
+cache:
+  timeout: 1000
+  pip: true
+  directories:
+    - $HOME/Deps/cmake/3.11.4
+    - $HOME/Deps/eigen
+    - $HOME/Deps/conda
+
+before_install:
+  # Dependencies are downloaded in $HOME/Downloads and installed in $HOME/Deps
+  - mkdir -p $HOME/Downloads $HOME/Deps
+
+install:
+  - ./dependencies/travis/install.sh
+  - ./dependencies/travis/cmake.sh
+  - ./dependencies/travis/anaconda.sh
+  - ./dependencies/travis/eigen.sh
+  - export PATH=$HOME/Deps/cmake/$CMAKE_VERSION/bin${PATH:+:$PATH}
+
+before_script:
+  - test -n $CC && unset CC
+  - test -n $CXX && unset CXX
+  - test -n $FC && unset FC
+
+script:
+  - ./dependencies/report_versions.sh
+  - ./custom.sh build_$(date "+%Y-%m-%d-%H-%M-%S")
