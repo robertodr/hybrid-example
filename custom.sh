@@ -18,6 +18,8 @@ cp -r ../src .
 
 PATH=$HOME/Deps/conda/bin${PATH:+:$PATH}
 
+conda config --append channels conda-forge
+
 conda build conda-recipe
 
 conda install --use-local conda-example-hybrid
