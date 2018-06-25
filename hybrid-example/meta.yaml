@@ -3,8 +3,7 @@ package:
   version: "0.0.0"
 
 source:
-  git_url: git@github.com:hande-qmc/hande.git # [linux]
-  git_tag: master
+  path: ../  # this can be changed to git-url
 
 build:
   number: 0
