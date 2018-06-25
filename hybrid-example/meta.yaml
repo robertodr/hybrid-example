@@ -1,0 +1,27 @@
+package:
+  name: hybrid-example
+  version: "0.0.0"
+
+source:
+  git_url: git@github.com:hande-qmc/hande.git # [linux]
+  git_tag: master
+
+build:
+  number: 0
+  skip: True # [win]
+  binary_relocation: true
+
+requirements:
+  build:
+    - cmake >=3.9
+    - {{ compiler('cxx') }}
+    - mkl-devel
+    - openmpi
+  run:
+    - mkl-devel
+    - openmpi
+
+about:
+  home: http://www.example.com
+  license: MIT
+  summary: "Summary in here ..."
